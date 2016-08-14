@@ -1,18 +1,7 @@
 (require 'package)
 (add-to-list 'package-archives
-            '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
-
-;(defun set-exec-path-from-shell-PATH ()
-;  (let ((path-from-shell (replace-regexp-in-string
-;                          "[ \t\n]*$"
-;                          ""
- ;                         (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
- ;   (setenv "PATH" path-from-shell)
- ;   (setq eshell-path-env path-from-shell) ; for eshell users
-  ;  (setq exec-path (split-string path-from-shell path-separator))))
-
-;(when window-system (set-exec-path-from-shell-PATH))
 
 
 (setenv "GOPATH" "/Users/johntech/code/gocode")
@@ -32,11 +21,19 @@
 (add-hook 'go-mode-hook 'auto-complete-for-go)
 
 (with-eval-after-load 'go-mode
-  (add-to-list 'load-path "/Users/johntech/code/gocode/src/github.com/dougm/goflymake")
+  (require 'go-eldoc)
+  (add-hook 'go-mode-hook 'go-eldoc-setup)
+  (require 'go-autocomplete)
   (global-linum-mode)
+  (smartparens-global-mode)
+  (require 'smartparens-config)
+;  (require 'go-snippets)
+ ;(require `es-windows)
+ ;(require 'project-explorer)
+  (global-set-key (kbd "M-e") 'project-explorer-toggle)
+  (add-to-list 'load-path "/Users/johntech/code/gocode/src/github.com/dougm/goflymake")
   (require 'go-flymake)
-  (require 'go-flycheck)
-  (require 'go-autocomplete))
+  (require 'go-flycheck))
 
 
 (add-to-list 'custom-theme-load-path "/Users/johntech/.emacs.d/color-themes/")
@@ -45,7 +42,6 @@
 (add-to-list 'load-path "/Users/johntech/.emacs.d/lib/neotree")
 (require 'neotree)
 (setq neo-smart-open t)
-
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key [f8] 'neotree-toggle)
 
@@ -56,4 +52,4 @@
 (require 'yasnippet)
 ;(yas-global-mode 1)
 (yas-reload-all)
-(add-hook 'prog-mode-hook #'yas-minor-mode)
+(add-hook 'go-mode-hook #'yas-minor-mode)
